@@ -1,0 +1,26 @@
+/* fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  border: 1px solid rgb(219, 219, 219);
+}
+
+html {
+  box-sizing: border-box;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 50px 200px;
+  gap: 10px;
+}
+
+.App {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 50vh;
+}
