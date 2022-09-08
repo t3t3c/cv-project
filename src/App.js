@@ -1,12 +1,79 @@
 import React, { Component } from 'react';
 import './styles/App.css';
+// provides unique id for keys
+import uniqid from 'uniqid';
+
+class SchoolItem extends Component {
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor="name">School name:</label>
+        <input
+          id="name"
+          onChange={this.props.handleChange}
+          value={this.props.school.name}
+        ></input>
+      </form>
+    );
+  }
+}
 
 class Education extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      schools: [
+        {
+          name: '',
+          title: '',
+          date: '',
+          id: uniqid(),
+          number: 0,
+        },
+      ],
+    };
+  }
+
+  // SCHOOL COMPONENT
+
+  // edits inputs
+  handleChange = (event, school) => {
+    const number = school.number;
+    const value = event.target.value;
+    const key = event.target.name;
+    const newArray = this.state.schools;
+  };
+
+  // EDUCATION COMPONENT
+
+  //  creates new school
+  handleClick = (event) => {
+    this.setState({
+      schools: this.state.schools.concat({
+        name: '',
+        title: '',
+        date: '',
+        id: uniqid(),
+        number: this.state.schools.length,
+      }),
+    });
+  };
+
   render() {
+    const schools = this.state.schools.map((school) => (
+      <SchoolItem
+        key={school.id}
+        school={school}
+        handleChange={this.handleChange}
+      />
+    ));
     return (
       <div className="education">
         <h2>Education</h2>
-        <form></form>
+        <ul>{schools}</ul>
+        <button onClick={(event) => this.handleClick(event)}>
+          Add new school
+        </button>
       </div>
     );
   }
@@ -24,12 +91,13 @@ class Information extends Component {
   }
   handleChange = (event) => {
     const value = event.target.value;
-    const name = event.target.name;
-
+    // target name is made the same as the appropriate object keys
+    const key = event.target.name;
     this.setState({
-      [name]: value,
+      [key]: value,
     });
   };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -66,7 +134,7 @@ class Information extends Component {
               value={this.state.phone}
               onChange={this.handleChange}
             />
-            <button type="submit">Submit</button>
+            <button type="submit">Save</button>
           </form>
         </div>
       );
