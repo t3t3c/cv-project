@@ -1,9 +1,84 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './styles/App.css';
 // provides unique id for keys
 import uniqid from 'uniqid';
 
-class Job extends Component {
+class Task extends Component {}
+
+function Job(props) {
+  const [editing, setEditing] = useState(true);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setEditing(!editing);
+  };
+  function handleDelete() {
+    props.jobHandleDelete(props.job);
+  }
+  function handleChange(event) {
+    props.jobHandleChange(event, props.job);
+  }
+  if (editing) {
+    return (
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="companyName">Company Name:</label>
+        <input
+          type="text"
+          id="companyName"
+          name="companyName"
+          value={props.job.companyName}
+          onChange={handleChange}
+        />
+        <label htmlFor="positionTitle">Position Title:</label>
+        <input
+          type="text"
+          id="positionTitle"
+          name="positionTitle"
+          value={props.job.positionTitle}
+          onChange={handleChange}
+        />
+        <label htmlFor="mainTasks">Main tasks:</label>
+        <input
+          type="text"
+          id="mainTasks"
+          name="mainTasks"
+          value={props.job.mainTasks}
+          onChange={handleChange}
+        />
+        <label htmlFor="date">Date:</label>
+        <input
+          type="text"
+          id="date"
+          name="date"
+          value={props.job.date}
+          onChange={handleChange}
+        />
+        <button type="submit">Save</button>
+        <button type="button" onClick={handleDelete}>
+          Delete
+        </button>
+      </form>
+    );
+  } else {
+    return (
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="companyName">Company Name:</label>
+        <p>{props.job.companyName}</p>
+        <label htmlFor="positionTitle">Position Title:</label>
+        <p>{props.job.positionTitle}</p>
+        <label htmlFor="mainTasks">Main tasks:</label>
+        <p>{props.job.mainTasks}</p>
+        <label htmlFor="date">Date:</label>
+        <p>{props.job.date}</p>
+        <button type="submit">Edit</button>
+        <button type="button" onClick={handleDelete}>
+          Delete
+        </button>
+      </form>
+    );
+  }
+}
+
+class Job2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -110,6 +185,7 @@ class Experience extends Component {
     const value = event.target.value;
     const key = event.target.name;
     const id = editedJob.id;
+    // this is not a good solution
     const newJobs = this.state.arrJobs.map((job) => {
       if (job.id === id) {
         job[key] = value;
@@ -120,6 +196,13 @@ class Experience extends Component {
       arrJobs: newJobs,
     });
   };
+  /*
+  this.setState(prevState => {
+    const newItems = [...prevState.items];
+    newItems[index].name = newName;
+    return {items: newItems};
+})
+*/
   handleClick = (event) => {
     this.setState({
       arrJobs: this.state.arrJobs.concat({
